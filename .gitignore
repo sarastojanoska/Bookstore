@@ -1,0 +1,24 @@
+
+# .NET build artifacts
+**/bin/
+**/obj/
+.vs/
+.vscode/
+
+# User-specific files
+*.user
+*.suo
+
+# Test results
+TestResults/
+coverage/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+
+# OS files
+.DS_Store
+Thumbs.db
