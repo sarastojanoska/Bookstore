@@ -1,17 +1,19 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var sqlPassword = builder.AddParameter(
-    "sql-password",
-    secret: true);
-
 var sqlServer = builder
-    .AddSqlServer("sql", sqlPassword)
-    .WithLifetime(ContainerLifetime.Persistent);
+    .AddSqlServer("sql");
+//.WithLifetime(ContainerLifetime.Persistent);
 
 var database = sqlServer.AddDatabase("bookstore");
 
-builder.AddProject<Projects.API>("api")
+var authentication = builder.AddProject<Projects.Authentication>("auth")
     .WithReference(database)
     .WaitFor(database);
+
+builder.AddProject<Projects.API>("api")
+    .WithReference(database)
+    .WithReference(authentication)
+    .WaitFor(database)
+    .WaitFor(authentication);
 
 builder.Build().Run();

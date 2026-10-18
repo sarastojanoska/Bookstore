@@ -1,14 +1,15 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
+    [Authorize(Policy = "BooksCrud")]
     [Route("api/[controller]")]
     public class BooksController(IBookService bookService) : ControllerBase
     {
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookDto>>> GetAll(CancellationToken cancellationToken)
         {
@@ -77,26 +78,6 @@ namespace API.Controllers
                 return NotFound();
 
             return NoContent();
-        }
-
-        [HttpGet("search")]
-        public async Task<ActionResult<PagedResult<BookDto>>> Search([FromQuery] string? title, [FromQuery] string? authorName, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, CancellationToken cancellationToken = default)
-        {
-            try
-            {
-                var result = await bookService.SearchAsync(
-                    title,
-                    authorName,
-                    pageNumber,
-                    pageSize,
-                    cancellationToken);
-
-                return Ok(result);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
         }
     }
 }

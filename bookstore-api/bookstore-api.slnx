@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Tests/">
+    <Project Path="IntegrationTests/IntegrationTests.csproj" />
+    <Project Path="UnitTests/UnitTests.csproj" />
+  </Folder>
+  <Project Path="API/API.csproj" />
+  <Project Path="AppHost/AppHost.csproj" />
+  <Project Path="Application/Application.csproj" />
+  <Project Path="Authentication/Authentication.csproj" />
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="Infrastructure/Infrastructure.csproj" />
+  <Project Path="ServiceDefaults/ServiceDefaults.csproj" />
+  <Project Path="Services/Services.csproj" />
+</Solution>
