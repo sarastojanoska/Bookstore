@@ -34,8 +34,7 @@ namespace Authentication
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
 
-                    RedirectUris = { "https://localhost:3001/swagger/signin-oidc" },    // Sync with the client callback URL
-                    //PostLogoutRedirectUris = { "https://localhost:3001/swagger/signout-callback-oidc" },    // Sync with the client callback URL
+                    RedirectUris = { "https://localhost:3001/swagger/oauth2-redirect.html" },
                     AllowedScopes = { "openid", "profile", "books.search" },
                     RequireConsent = false
                 },
@@ -50,7 +49,7 @@ namespace Authentication
 
                     AllowedScopes = { "books.crud" },
 
-                    AllowedCorsOrigins = { "https://localhost:3001" }  // Sync with the client URL
+                    AllowedCorsOrigins = { "https://localhost:3001" }
                 },
             ];
     }

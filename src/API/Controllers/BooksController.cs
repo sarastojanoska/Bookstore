@@ -1,7 +1,9 @@
-﻿using Application.DTOs;
+﻿using API.Settings;
+using Application.DTOs;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace API.Controllers
 {
