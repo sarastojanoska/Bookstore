@@ -2,7 +2,6 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var sqlServer = builder
     .AddSqlServer("sql");
-//.WithLifetime(ContainerLifetime.Persistent);
 
 var database = sqlServer.AddDatabase("bookstore");
 

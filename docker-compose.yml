@@ -1,0 +1,13 @@
+services:
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: src/API/Dockerfile
+
+  authentication:
+    image: ${DOCKER_REGISTRY-}authentication
+    build:
+      context: .
+      dockerfile: src/Authentication/Dockerfile
+

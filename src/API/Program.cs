@@ -1,24 +1,17 @@
 using API.Extensions;
 using API.Filters;
 using API.Settings;
+using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// TODO: Settings bindings for DI , maybe remove later
-builder.Services.AddOptions<IdentitySettings>()
-    .Bind(builder.Configuration.GetSection("IdentityServer"))
-    .ValidateOnStart();
 
 var identitySettings = builder.Configuration.GetSection("IdentityServer").Get<IdentitySettings>()
     ?? throw new InvalidOperationException("IdentityServer settings are not configured.");
 
 builder.AddServiceDefaults();
-
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims mapping
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
@@ -34,7 +27,7 @@ builder.Services.AddAuthorizationBuilder()
 
     .AddPolicy("BooksSearch", policy =>
         policy.RequireClaim("scope", "books.search")
-                .RequireAssertion(context => context.User.HasClaim(c => c.Type == "sub")));
+                .RequireAuthenticatedUser());
 
 builder.Services.AddControllers();
 
@@ -79,6 +72,26 @@ builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
+bool seed = true;
+
+if (seed)
+{
+    using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    context.Database.Migrate();
+
+    if (!context.Authors.Any())
+    {
+        context.Authors.AddRange(
+            new Author { Name = "Author 1" },
+            new Author { Name = "Author 2" },
+            new Author { Name = "Author 3" }
+        );
+        context.SaveChanges();
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -108,3 +121,5 @@ if (app.Environment.IsDevelopment())
 app.MapDefaultEndpoints();
 
 app.Run();
+
+public partial class Program { }
